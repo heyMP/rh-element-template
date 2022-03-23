@@ -1,0 +1,32 @@
+version: "2.1"
+services:
+  reverse-proxy:
+    image: traefik:v1.7 # The official Traefik docker image
+    command: --api --docker # Enables the web UI and tells Traefik to listen to docker
+    ports:
+      - "80:80"     # The HTTP port
+      # - "8080:8080" # The Web UI (enabled by --api)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+
+  keycloak:
+    image: jboss/keycloak
+    labels:
+      - "traefik.frontend.rule=Host:sso.redhatdotcom.traefik.me"
+      - "traefik.port=8080"
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_IMPORT=/config/redhat_external_realm.json
+    volumes:
+      - ./keycloak-server/config:/config
+    restart: unless-stopped
+
+  # demo:
+  #   image: nginx
+  #   labels:
+  #     - "traefik.frontend.rule=Host:redhatdotcom.traefik.me"
+  #     - "traefik.port=80"
+  #   volumes:
+  #     - ./dist:/usr/share/nginx/html

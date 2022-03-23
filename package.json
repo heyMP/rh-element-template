@@ -15,9 +15,7 @@
     "start": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds\""
   },
   "dependencies": {
-    "lit": "^2.0.2",
-    "jwt-decode": "^3.1.2",
-    "rxjs": "^7.5.5"
+    "lit": "^2.0.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.4",

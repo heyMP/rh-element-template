@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { authManager } from '../dist/RhAuthManager.js';
+// import { authManager } from '../dist/RhAuthManager.js';
 (function (factory) {
   typeof define === 'function' && define.amd ? define(factory) : factory();
 })(function () {
@@ -272,6 +272,7 @@ class CPXAuth1 extends HTMLElement {
     super();
   }
   connectedCallback() {
+    console.log('connected')
     document.cookie.split(';').reduce((a, c) => {
       let kv = c.trim().split('=');
       a.set(kv[0], kv[1]);
@@ -282,13 +283,13 @@ class CPXAuth1 extends HTMLElement {
       this.user = JSON.parse(data.innerText);
     }
     // subscribe to login events
-    authManager.requests.subscribe({
-      next: ({ type }) => {
-        if (type === 'login') {
-          this.login();
-        }
-      },
-    });
+    // authManager.requests.subscribe({
+    //   next: ({ type }) => {
+    //     if (type === 'login') {
+    //       this.login();
+    //     }
+    //   },
+    // });
   }
   static get observedAttributes() {
     return [
@@ -354,7 +355,7 @@ class CPXAuth1 extends HTMLElement {
             this.user = this.keycloak.tokenParsed;
             document.cookie = `${this.jwtCookie}=${this.keycloak.token}`;
             document.cookie = `${this.jwtCookie}_refresh=${this.keycloak.refreshToken}`;
-            authManager.jwt = this.keycloak.token;
+            // authManager.jwt = this.keycloak.token;
           } else {
             if (this.kcAuto && !this.ready) {
               this.login();

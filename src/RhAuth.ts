@@ -1,47 +1,67 @@
 import { LitElement, html, css } from 'lit';
-import { property, customElement } from 'lit/decorators.js';
-import { SubscriptionLike } from 'rxjs';
-import { authManager } from './lib/RhAuthManager';
+import { property, state } from 'lit/decorators.js';
 import './lib/cpx-auth.js';
 
-@customElement('rh-auth')
 export class RhAuth extends LitElement {
-  @property({ type: String }) public jwt: string | null = null;
-  private authManagerSubscription: SubscriptionLike | null = null;
+  @state() private kcIsInitiated: boolean = false;
+  // @property({ type: String }) public jwt: string | null = null;
+  // @property({ type: Object }) public token: any | null = null;
+  // @property({ type: String }) public url: string | null = null;
+  // @property({ type: String, attribute: 'kc-url' }) public kcUrl: string | null = null;
+  // @property({ type: String, attribute: 'kc-realm' }) public kcRealm: string | null = null;
+  // @property({ type: String, attribute: 'kc-cliend-id' }) public kcClientId: string | null = null;
+  // @property({ type: Boolean, attribute: 'kc-auto' }) public kcAuto: boolean | null = null;
+  // @property({ type: String, attribute: 'kc-config' }) public kcConfig: any | null = null;
+  // @property({ type: String, attribute: 'kc-config-url' }) public kcConfigUrl: string | null = null;
+  // @property({ type: String, attribute: 'kc-options' }) public kcOptions: any | null = null;
+  // @property({ type: String, attribute: 'kc-options-url' }) public kcOptionsUrl: string | null = null;
 
   connectedCallback(): void {
     super.connectedCallback();
   }
 
-  protected firstUpdated(_changedProperties: Map<string | number | symbol, unknown>): void {
-    // subscribe to changes to to the jwt
-    this.authManagerSubscription = authManager.user.subscribe({
-      next: user => {
-      },
-    });
-  }
-
   disconnectedCallback(): void {
     super.disconnectedCallback();
-    if (this.authManagerSubscription)
-      this.authManagerSubscription.unsubscribe();
+  }
+
+  protected firstUpdated(_changedProperties: Map<string | number | symbol, unknown>): void {
+    setTimeout(() => {
+      // @ts-ignore
+      // this.renderRoot.querySelector('cpx-auth').login();
+    }, 1000);
   }
 
   render() {
-    return html`<cpx-auth></cpx-auth>`;
+    const kcConfig = {
+      url: 'http://sso.redhatdotcom.traefik.me/auth', realm: 'redhat-external', clientId: 'rh_product_trials'
+    }
+    // const kcOptions = {
+    //   enableLogging: true,
+    //   onLoad: "check-sso",
+    //   pkceMethod: "S256",
+    //   silentCheckSsoRedirectUri: window.location.href,
+    //   silentCheckSsoFallback: false,
+    //   flow: 'standard'
+    // }
+    const kcOptions = {
+      enableLogging: true,
+      pkceMethod: "S256",
+      // onLoad: "check-sso",
+      // silentCheckSsoRedirectUri: window.location.href,
+      // silentCheckSsoFallback: true,
+      responseMode: 'fragment',
+      flow: 'standard'
+    }
+    return html`
+      <cpx-auth kc-config="${JSON.stringify(kcConfig)}" kc-options="${JSON.stringify(kcOptions)}"></cpx-auth>
+    `;
   }
 
   /**
    * Request the manager to authenticate the user
    */
-  requestLogin(): void {
-    authManager.requests.next({ type: 'login' });
-  }
-
-  /**
-   * Request the manager to log the user out
-   */
-  requestLogout(): void {
-    authManager.requests.next({ type: 'logout' });
+  login(): void {
+    // @ts-ignore
+    this.renderRoot.querySelector('cpx-auth')?.login();
   }
 }
