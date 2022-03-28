@@ -22,12 +22,15 @@
 
 <body>
   <button id="login">Login</button>
+  <button id="logout">Logout</button>
   <rh-auth></rh-auth>
-
   <script type="module" src="./out-tsc/src/rh-auth.js"></script>
   <script type="module">
     document.querySelector('#login').addEventListener('click', e => {
       document.querySelector('rh-auth').login();
+    })
+    document.querySelector('#logout').addEventListener('click', e => {
+      document.querySelector('rh-auth').logout();
     })
   </script>
 </body>

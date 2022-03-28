@@ -143,7 +143,7 @@ class CPXAuth1 extends HTMLElement {
     this._user = val;
     if (typeof this._user.email !== 'undefined') this.email = this._user.email;
     if (typeof this._user.name !== 'undefined') this.name = this._user.name;
-    dispatchEvent(
+    this.dispatchEvent(
       new CustomEvent(this.ready ? 'auth-update' : 'auth-ready', {
         detail: this,
         composed: true,

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import jwtDecode from 'jwt-decode';
 import { Subject, SubscribableOrPromise } from 'rxjs';
 

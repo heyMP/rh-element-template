@@ -23,10 +23,10 @@ services:
       - ./keycloak-server/config:/config
     restart: unless-stopped
 
-  # demo:
-  #   image: nginx
-  #   labels:
-  #     - "traefik.frontend.rule=Host:redhatdotcom.traefik.me"
-  #     - "traefik.port=80"
-  #   volumes:
-  #     - ./dist:/usr/share/nginx/html
+  demo:
+    image: nginx
+    labels:
+      - "traefik.frontend.rule=Host:redhatdotcom.traefik.me"
+      - "traefik.port=80"
+    volumes:
+      - ./dist:/usr/share/nginx/html
