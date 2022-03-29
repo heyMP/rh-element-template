@@ -32,10 +32,9 @@ export class RhAuth extends LitElement {
     }, 1000);
   }
 
-
   render() {
     const kcConfig = {
-      url: 'http://sso.redhatdotcom.traefik.me/auth', realm: 'redhat-external', clientId: 'rh_product_trials'
+      url: 'http://sso.my-app.traefik.me/auth', realm: 'redhat-external', clientId: 'my_client_id'
     }
     const kcOptions = {
       enableLogging: true,

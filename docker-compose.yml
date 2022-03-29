@@ -12,7 +12,7 @@ services:
   keycloak:
     image: jboss/keycloak
     labels:
-      - "traefik.frontend.rule=Host:sso.redhatdotcom.traefik.me"
+      - "traefik.frontend.rule=Host:sso.my-app.traefik.me"
       - "traefik.port=8080"
     container_name: keycloak
     environment:
@@ -24,9 +24,19 @@ services:
     restart: unless-stopped
 
   demo:
-    image: nginx
+    build: .
     labels:
-      - "traefik.frontend.rule=Host:redhatdotcom.traefik.me"
-      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:my-app.traefik.me"
+      - "traefik.port=8000"
+    entrypoint: 'npm run start'
     volumes:
-      - ./dist:/usr/share/nginx/html
+      - /app/node_modules
+      - .:/app
+
+  # demo:
+  #   image: nginx
+  #   labels:
+  #     - "traefik.frontend.rule=Host:my-app.traefik.me"
+  #     - "traefik.port=80"
+  #   volumes:
+  #     - ./dist:/usr/share/nginx/html

@@ -9,6 +9,8 @@ const hmr = process.argv.includes('--hmr');
 export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
   open: '/',
   watch: !hmr,
+  hostname: '0.0.0.0',
+  port: 8000,
   /** Resolve bare module imports */
   nodeResolve: {
     exportConditions: ['browser', 'development'],
